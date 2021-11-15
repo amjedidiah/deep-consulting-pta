@@ -1,26 +1,69 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// Module imports
+import React, {Suspense, useEffect} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import LoadingBar from 'react-redux-loading-bar';
+import {ToastContainer} from 'react-toastify';
 
-function App() {
+// App routes import
+import Routing from 'routing';
+
+// Redux imports
+import {setDummy} from 'redux/actions/dummy';
+import {getLoading} from 'redux/selectors';
+
+/**
+ * @component App
+ * @param {object} props
+ * @return {React.Component} - The UI DOM object
+ *
+ * @example
+ * return <App />
+ */
+function App(props) {
+  useEffect(() => props.setDummy(), []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<LoadingBar />}>
+      <Routing />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </Suspense>
   );
 }
 
-export default App;
+App.propTypes = {
+  /**
+   * App setDummy
+   */
+  setDummy: PropTypes.func,
+  /**
+   * App loading
+   */
+  loading: PropTypes.bool,
+};
+
+App.defaultProps = {
+  loading: true,
+};
+
+/**
+ * Maps redux state to component props
+ * @param {state} state
+ * @return {{loading: boolean}}
+ */
+const mapStateToProps = ({dummy}) => ({
+  loading: getLoading(dummy),
+});
+
+// Component export
+export default connect(mapStateToProps, {setDummy})(App);
