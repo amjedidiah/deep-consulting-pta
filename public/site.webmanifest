@@ -1,0 +1,42 @@
+{
+  "short_name": "Sunny",
+  "name": "Sunny Weather App",
+  "description": "Weather app for Deep Consulting PTA",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "shortcuts": [
+    {
+      "name": "City Details | Sunny",
+      "short_name": "City Details",
+      "description": "More weather info",
+      "url": "/details?source=pwa",
+      "icons": [
+        {
+          "src": "logo512.png",
+          "sizes": "512x512"
+        }
+      ]
+    }
+  ]
+}

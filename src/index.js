@@ -1,23 +1,47 @@
+// Module imports
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import {render} from 'react-dom';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import 'react-toastify/dist/ReactToastify.css';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// App component import
+import App from 'app';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.unregister();
+// Config imports
+import * as serviceWorkerRegistration from 'serviceWorkerRegistration';
+import reportWebVitals from 'reportWebVitals';
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// SCSS import
+import 'assets/sass/main.scss';
+
+// Store import
+import {persistor, store} from 'redux/store';
+
+// Util imports
+import {isProduction} from 'utils/constants';
+
+/* Hot reloading */
+const renderApp = () =>
+  render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </React.StrictMode>,
+      document.getElementById('root'),
+  );
+if (!isProduction && module.hot) {
+  module.hot.accept('app', renderApp);
+}
+renderApp();
+
+// Service worker only in production mode
+if (isProduction) {
+  serviceWorkerRegistration.register();
+}
+
+// Report web vitals
 reportWebVitals();
